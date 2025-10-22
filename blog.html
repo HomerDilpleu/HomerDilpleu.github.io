@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dilpleu Games - Blog Dev</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">Dilpleu Games</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="games.html">My Games</a></li>
+        <li><a href="blog.html" class="active">Dev Blog</a></li>
+      </ul>
+      <button class="menu-toggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <section class="page-header">
+    <div class="container">
+      <h1>Dev Blog</h1>
+      <p>Post mortems, tutorials, technical articles on HTML5 game development</p>
+    </div>
+  </section>
+
+  <!-- Filtres de catégories -->
+  <section class="blog-filters">
+    <div class="container">
+      <button class="filter-btn active" data-category="all">All</button>
+      <button class="filter-btn" data-category="postmortem">Post mortems</button>
+      <button class="filter-btn" data-category="tutorial">Tutorials</button>
+    </div>
+  </section>
+
+  <section class="blog-posts">
+    <div class="container">
+	  <!-- Post mortem Cathedral builder -->
+      <article class="blog-post" data-category="postmortem">
+        <div class="post-meta">
+          <span class="date">September 16th 2023</span>
+          <span class="category">Post Mortem</span>
+        </div>
+        <h2>CATHEDRAL BUILDER - My first video game</h2>
+        <p>My journey on creating my very first video game.</p>
+        <a href="articles/postmortem-cathedral-builder.html" class="read-more">Read more →</a>
+      </article>
+
+
+  </section>
+
+  <footer>
+    <div class="container">
+      <img src="img/logo.png" width="75">
+      <p>&copy; 2025 Dilpleu Games - All rights reserved</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

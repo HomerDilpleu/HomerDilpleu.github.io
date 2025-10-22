@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dilpleu Games - Hobbyist web game developer</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">Dilpleu Games</div>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../games.html">My Games</a></li>
+        <li><a href="../blog.html" class="active">Dev Blog</a></li>
+      </ul>
+      <button class="menu-toggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Article title -->
+  <section class="page-header">
+    <div class="container">
+      <h1>CATHEDRAL BUILDER - My first video game</h1>
+      <h3><span class="highlight">POST MORTEM</span></h3>
+    </div>
+  </section>
+
+  <!-- Article content -->
+  <section class="article-content">
+
+  	<div class="container">
+		<!-- ******* -->
+  	    <h1>CONTEXT</h1>
+    	<p>Cathedral Builder is my first game. I've always been interested in game development and have a decent understanding of how games work, but I never actually tried creating one myself until the 2023 JS13KGAMES challenge. I discovered this competition by chance in January 2023 and set myself the goal of submitting a solid entry by the deadline.</p>
+		<!-- ******* -->
+    	<h1>BEFORE THE JAM</h1>
+    	<p>As a beginner, I started researching game architecture, especially in an HTML5 & JavaScript context. I read numerous tutorials and experimented with external libraries like Phaser and Pixi. However, I quickly realized I needed to develop my own mini game engine for two main reasons:</p>
+    	<ol>
+    		<li>It's fun and challenging</li>
+    		<li>I like to understand and control every single line of code</li>
+    	</ol>
+    	<p>I began working on my <a href="https://github.com/HomerDilpleu/MiniGameEngineJS" target="_blank">MGE</a> (Mini Game Engine) project in April 2023 during Easter holidays. Within one week, I had a first functional version with all the features I wanted (game loop, mouse and keyboard inputs, sprites, etc.) except sound.</p>
+    	<p>I then dove into learning the Web Audio API and created a simple synthesizer and basic sequencer. The music component turned out to be the most challenging part to implement, despite having some prior knowledge of sound synthesis</p>
+    	<p>Finally, I created a small Python script for code minification.</p>
+		<!-- ******* -->
+    	<h1>AUGUST 13TH - AUGUST 20TH: THEME REVEAL AND CONCEPT</h1>
+    	<p>When the big day arrived, I was well-prepared with my mini game engine ready and plenty of energy to start working.</p>
+    	<p>I loved this year's theme <span class="highlight">"13th Century"</span> because it's concrete and tangible—unlike some previous themes like "404", "Back", or "Offline" which seemed more abstract and challenging. Within an hour of the theme announcement, I knew I wanted to create a game about cathedral construction. I wanted to highlight something positive from this historical period, and I believe cathedral building represents one of humanity's greatest achievements.</p>
+    	<p>I've visited many cathedrals throughout my life as a tourist, but I'd never really examined them closely or understood how they were built. So I began researching Gothic art and cathedral architecture. I spent hours online trying to understand cathedral structures and how it's possible to build so high using only stones. I learned an incredible amount and will now see cathedrals with completely different eyes!</p>
+    	<br>
+    	<p>However, having the concept and technical knowledge wasn't enough. I still had to figure out: <span class="highlight">What will my game look like?</span> Will it be a clicker game, a strategy game, a puzzle? How will the player interact and what will they see?</p>
+    	<p>This turned out to be far more difficult than I anticipated. I hadn't expected how challenging game design and gameplay definition would be. I spent an entire week just sketching in my notebook, trying different scenarios, exploring various gameplay mechanics—all without writing a single line of code.</p>
+    	<p>In the end, I chose to create a clicker game with a simple workflow: <span class="highlight">extract rock → cut stone → build</span>. Players would be able to upgrade each element with gold, and I'd include random bonuses and auto-click buttons.</p>
+    	<p>In my vision, the fun part for players would be watching the cathedral being built progressively. Therefore, I dedicated a significant portion of the project to cathedral rendering.</p>
+    	<!-- ******* -->
+    	<h1>AUGUST 21ST - SEPTEMBRE 10TH: DEVELOPMENT TIME!</h1>
+    	<p>After initializing the project, I started building a mini 3D rendering engine based on vanishing point perspective. It renders cubes (the stones of our cathedral) at given positions (x, y, z). It's a quick and dirty solution, but it gets the job done!</p>
+    	<p>Next, I worked on the cathedral's structure. From a technical standpoint, it's quite simple: the structure is stored stone-by-stone in an array, and there's a <code>buildStones</code> function that draws the next "x" stones. Stones are rendered in 4 offline canvases representing different player viewpoints (depths: 110, 90, 50, and 0). The appropriate canvas (depending on how many stones have been built) is then drawn onto the main game canvas.</p>
+    	<p>The most difficult part of development was populating the structure array in the <code>defineStructure</code> function. To keep my ideas organized, I drew the cathedral layout in several Excel grids.</p>
+      <img src="../img/article-cathedralbuilder-01.png" width="500">
+      <img src="../img/article-cathedralbuilder-02.png" width="500">
+      <img src="../img/article-cathedralbuilder-03.png" width="500">
+      <!-- ******* -->
+      <h1>CONCLUSION</h1>
+      <p>I'm really proud to have released something for this challenge!</p>
+      <h2>What Went Well</h2>
+      <p>I learned an enormous amount during the game jam and had a lot of fun. The community is fantastic, and I enjoyed following other developers' progress in the Slack chat.</p>
+      <h2>What Was Challenging</h2>
+      <p>On the other hand, I didn't anticipate how difficult game design would be (in my opinion, it's even harder than coding itself) or the number of late nights I'd spend working during those 4 weeks.</p>
+      <h1>LINKS</h1>
+      <p>Play (and give some stars if you want) on <a href="https://dilpleu-games.itch.io/cathedral-builder" target="_blank">itch.io</a></p>
+      <p>Play game entry on <a href="https://js13kgames.com/2023/games/cathedral-builder" target="_blank">js13kgames</a></p>
+      <p>Have a look to the source code on <a href="https://github.com/HomerDilpleu/CathedralBuilder" target="_blank">github</a></p>
+  	</div>
+  </section>
+	
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <img src="../img/logo.png" width="75">
+      <p>&copy; 2025 Dilpleu Games - All rights reserved</p>
+    </div>
+  </footer>
+
+  <script src="../js/script.js"></script>
+</body>
+</html>
