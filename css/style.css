@@ -401,6 +401,13 @@ body {
     white-space: nowrap;
 }
 
+.article-content pre {
+    background-color: var(--bg-light);
+    color: var(--primary-dark);
+    border-radius: 0.5em;
+    padding: 4px 5px 6px;
+    overflow-x: auto;
+}
 
 /* Footer */
 footer {
