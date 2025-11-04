@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dilpleu Games - Hobbyist web game developer</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">Dilpleu Games</div>
+      <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../games.html">My Games</a></li>
+        <li><a href="../blog.html" class="active">Dev Blog</a></li>
+      </ul>
+      <button class="menu-toggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Article title -->
+  <section class="page-header">
+    <div class="container">
+      <h1>WASH THE CAT - Cheating with physics</h1>
+      <h3><span class="highlight">POST MORTEM</span></h3>
+    </div>
+  </section>
+
+  <!-- Article content -->
+  <section class="article-content">
+
+  	<div class="container">
+ 		  <!-- ******* -->
+ 	    <h1>CONTEXT</h1>
+    	<p>For the third year in a row, I participated in the JS13K game jam, where the goal is to create a web-based video game in one month with a file size under 13 KB. This size constraint encourages creativity, and every JS13K game has something unique about it.</p>
+      <p>This year's theme for 2025 was <span class="highlight">BLACK CAT</span>.</p>
+      <!-- ******* -->
+ 	    <h1>THE IDEA</h1>
+    	<p>I don't know why, but I immediately decided I was going to make a game about washing a dirty black cat.</p>
+    	<p>I imagined a cat in a painter's studio getting stained with paint, or maybe an alley cat getting dirty while rummaging through trash... In the end, I went with a "Cat Wash" set against a modern city backdrop. I made this choice because the play on "Car Wash" amused me, and because it seemed feasible to procedurally generate (with minimal code) a modern cityscape based on buildings.</p>
+      <!-- ******* -->
+ 	    <h1>GAMEPLAY</h1>
+    	<p>Finding the right gameplay for a game is, in my opinion, the most complex part. It needs to be simple, innovative, fun, and engaging for the player.</p>
+    	<p>In "Wash The Cat", the gameplay is based on a mix of puzzle-solving and precise timing. Mixing these two elements wasn't necessarily a great idea, and many players complained about it.</p>
+      <!-- ******* -->
+ 	    <h1>THE HYDRAULIC SYSTEM</h1>
+    	<p>I had in mind to implement a hydraulic system to deliver water to a shower.</p>
+    	<p>There was obviously the option to make a Pipe Mania clone, but that seemed uninteresting to me. So I went with a system based on communicating vessels. To my surprise, I couldn't find any game using this concept, so I had to invent everything from scratch.</p>
+    	<p>The problem with communicating vessels is that overall, the water level in the system will decrease due to gravity, which limits gameplay possibilities. To spice things up a bit, I implemented a faucet system that triggers indirectly when a certain water level is reached in a tank. This allows the game to be more dynamic and more engaging.</p>
+      <!-- ******* -->
+ 	    <h1>THE PHYSICS</h1>
+    	<p>The basic idea is quite simple: balance the pressures of the different nodes in the system. </p>
+    	<p>The physics is based on 2 main components:</p>
+    	<ul>
+    		<li>Tanks that contain the water</li>
+    		<li>Distributors that connect multiple tanks together</li>
+     	</ul>
+    	<p>The pipes are just links between tanks and distributors; the faucets only serve to ignore a tank in calculations. Thus, pipes and faucets don't really play a role in the physics—the essential components are the tanks and distributors.</p>
+    	<p>The algorithm used is simple:</p>
+    	<ol>
+    		<li>Calculate the pressure of each tank: this pressure depends solely on the tank's height and the water height in that tank</li>
+    		<li>Calculate the pressure in each distributor: it's simply the average of the pressures of each tank connected to the distributor</li>
+    		<li>Calculate the volume of water to move in each tank: it's proportional to the difference between the tank's pressure and the pressure of the distributor it's connected to</li>
+    		<li>Update the water height in each tank: obvious calculation when you know the volume to move and the tank's diameter</li>
+     	</ol>
+    	<p>At first glance, this mechanism seems to work perfectly.</p>
+      <img src="../img/article-washthecat-01.gif" width="300">
+    	<p>But there's a big problem: the algorithm doesn't handle the fact that the total amount of liquid must remain constant. Indeed, in this algorithm, the volume of water to move only depends on the pressure difference between the distributor and the tank, regardless of what's happening in other tanks. The algorithm therefore only works if 2 tanks are connected to a distributor; beyond that, the total amount of liquid in the system won't be constant. This is blatant in the following example:</p>
+      <img src="../img/article-washthecat-02.gif" width="600">
+    	<p>Dealing with this liquid conservation issue is complex and requires iterative flow-balancing algorithms. In one month, I had neither the time nor the desire to handle this properly, so I decided to <span class="highlight">cheat with the physics</span>.</p>
+    	<p>To do this, I always connect only 2 tanks to a distributor since that's the only case that works perfectly. As a complement, I created a "combo" object that merges multiple tanks; the combo's water level is simply the average level of each tank. This ensures the conservation of the total liquid quantity in the system.</p>
+    	<p>The final algorithm becomes:</p>
+    	<ul>
+    		<li>Steps 1 to 4: see above</li>
+    		<li>Step 5: Calculate the height of combos (average of tank heights)</li>
+     	</ul>
+    	<p>Example: System without the combos</p>
+      <img src="../img/article-washthecat-03.gif" width="600">
+    	<p>Same with the combos</p>
+      <img src="../img/article-washthecat-04.gif" width="600">
+    	<p>The result is realistic and allows for creating just about any imaginable hydraulic system.</p>
+      <!-- ******* -->
+    	<h1>LAST DIFFICULTY</h1>
+    	<p>This might seem a bit silly, but I struggled to determine whether a pipe is full or empty.</p>
+    	<p>Indeed, in the implemented mechanics, the only information we know about the pipe is its flow rate. If the flow rate is different from 0, then the pipe is full, but if the flow rate is zero, the pipe may or may not be full depending on the situation.</p>
+    	<p>So here again, due to the lack of precision in my hydraulic engine, I had to find a solution that's dirty from a physics standpoint but creates enough of an illusion that it works.</p>
+    	<p>Thus, the rule I applied when a pipe's flow is zero is as follows: I consider the pipe full if it's connected to a non-empty tank and that tank's faucet is open.</p>
+      <!-- ******* -->
+    	<h1>CONCLUSION</h1>
+    	<p>I really struggled to ship a game this year and almost gave up at the beginning of the third week of the competition.</p>
+    	<p>The main difficulties were:</p>
+    	<ul>
+    		<li>Setting up the hydraulic engine</li>
+    		<li>Designing gameplay to make the game a little fun to play</li>
+     	</ul>
+    	<p>In my opinion, you shouldn't hesitate to simplify things and take liberties with physics: in a small game, what matters isn't accuracy but the quality of the final illusion.</p>
+    	<p>I want to thank my family who helped me in the creative process and playtested the game extensively.</p>
+    	<p>I also want to mention the JS13K community, which is active, supportive, and friendly.</p>
+      <!-- ******* -->
+      <h1>LINKS</h1>
+      <p>Play (and give some stars if you want) on <a href="https://dilpleu-games.itch.io/wash-the-cat" target="_blank">itch.io</a></p>
+      <p>Play game entry on <a href="https://js13kgames.com/2025/games/wash-the-cat" target="_blank">js13kgames</a></p>
+      <p>Have a look to the source code on <a href="https://github.com/HomerDilpleu/WashTheCat" target="_blank">github</a></p>
+  	</div>
+  </section>
+	
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <img src="../img/logo.png" width="75">
+      <p>&copy; 2025 Dilpleu Games - All rights reserved</p>
+    </div>
+  </footer>
+
+  <script src="../js/script.js"></script>
+</body>
+</html>
